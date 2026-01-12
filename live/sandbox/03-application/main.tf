@@ -10,7 +10,7 @@ module "cloudrun" {
   service_name = var.cloudrun_service_name
   region = var.run_region
   image = var.cloudrun_image
-  vpc_connector = module.vpc_connector.connector_self_link
+  vpc_connector = data.terraform_remote_state.network.outputs.connector_self_link
   container_port = var.container_port
   env_vars = var.cloudrun_env
   service_account = google_service_account.cloudrun.email

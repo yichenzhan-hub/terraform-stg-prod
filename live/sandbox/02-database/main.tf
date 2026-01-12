@@ -1,3 +1,8 @@
+locals {
+  # Pull the network link from the remote state data source
+  network_self_link = data.terraform_remote_state.network.outputs.network_self_link
+}
+
 module "cloudsql" {
   source = "../../modules/cloudsql"
   project = var.project
