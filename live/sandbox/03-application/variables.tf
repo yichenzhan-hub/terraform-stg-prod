@@ -1,3 +1,15 @@
+variable "project" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+variable "run_region" {
+  type = string
+}
+
 variable "sa_name" { default = "sms-gw-sa" }
 variable "sa_display" { default = "SMS Gateway service account" }
 
