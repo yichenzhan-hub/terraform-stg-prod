@@ -1,7 +1,7 @@
 module "network" {
   # Only create if not importing existing resources
   count   = var.create_network ? 1 : 0
-  source  = "../../modules/network"
+  source  = "../../../modules/network"
   vpc_name = var.vpc_name
   region = var.region
   subnet_cidr = var.subnet_cidr
@@ -27,7 +27,7 @@ data "google_compute_subnetwork" "this" {
 }
 
 module "vpc_connector" {
-  source = "../../modules/vpc_connector"
+  source = "../../../modules/vpc_connector"
   name = var.connector_name
   region = var.run_region
   network_self_link = local.network_self_link
@@ -41,7 +41,7 @@ resource "google_compute_address" "nat_ip" {
 }
 
 module "cloud_nat" {
-  source = "../../modules/cloud_nat"
+  source = "../../../modules/cloud_nat"
   vpc_name = var.vpc_name
   network_self_link = local.network_self_link
   region = var.region

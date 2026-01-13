@@ -1,12 +1,12 @@
 module "iam" {
-  source = "../../modules/iam"
+  source = "../../../modules/iam"
   sa_name = var.sa_name
   sa_display = var.sa_display
   project = var.project
 }
 
 module "cloudrun" {
-  source = "../../modules/cloudrun"
+  source = "../../../modules/cloudrun"
   service_name = var.cloudrun_service_name
   region = var.run_region
   image = var.cloudrun_image

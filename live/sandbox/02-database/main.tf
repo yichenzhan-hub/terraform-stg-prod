@@ -4,7 +4,7 @@ locals {
 }
 
 module "cloudsql" {
-  source = "../../modules/cloudsql"
+  source = "../../../modules/cloudsql"
   project = var.project
   create_instance = var.create_instance
   instance_name = var.instance_name
