@@ -10,7 +10,22 @@ module "cloudrun" {
   service_name = var.cloudrun_service_name
   region = var.run_region
   image = var.cloudrun_image
-  vpc_connector = data.terraform_remote_state.network.outputs.connector_self_link
+  # 1. DISABLE the old connector
+  # vpc_connector = data.terraform_remote_state.network.outputs.connector_self_link
+  vpc_connector = ""
+  # 2. ENABLE Direct VPC Egress using Annotations
+  # We merge this with any other annotations you might have
+  annotations = {
+    "run.googleapis.com/vpc-access-egress" = "all-traffic"
+    
+    "run.googleapis.com/network-interfaces" = jsonencode([
+      {
+        network    = data.terraform_remote_state.network.outputs.network_name
+        subnetwork = data.terraform_remote_state.network.outputs.subnet_name
+        tags       = ["cloud-run-egress"] # Optional: helps with Firewall rules
+      }
+    ])
+  }
   container_port = var.container_port
   env_vars = var.cloudrun_env
   service_account = google_service_account.cloudrun.email

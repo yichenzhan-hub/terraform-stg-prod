@@ -26,14 +26,14 @@ data "google_compute_subnetwork" "this" {
   region = var.region
 }
 
-module "vpc_connector" {
-  source = "../../../modules/vpc_connector"
-  name = var.connector_name
-  region = var.run_region
-  network_self_link = local.network_self_link
-  cidr_range = var.connector_cidr
-  project = var.project
-}
+# module "vpc_connector" {
+#  source = "../../../modules/vpc_connector"
+#  name = var.connector_name
+#  region = var.run_region
+#  network_self_link = local.network_self_link
+#  cidr_range = var.connector_cidr
+#  project = var.project
+# }
 
 resource "google_compute_address" "nat_ip" {
   name   = var.nat_ip_name
