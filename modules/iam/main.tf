@@ -15,3 +15,9 @@ resource "google_project_iam_member" "run_invoker" {
   role    = "roles/run.invoker"
   member  = "serviceAccount:${google_service_account.cloudrun.email}"
 }
+
+resource "google_project_iam_member" "pubsub_subscriber" {
+  project = var.project
+  role    = "roles/pubsub.subscriber"
+  member  = "serviceAccount:${google_service_account.cloudrun.email}"
+}
