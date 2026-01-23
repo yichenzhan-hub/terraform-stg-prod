@@ -20,3 +20,8 @@ variable "cluster_location" {
   type        = string
   default     = "northamerica-northeast2" 
 }
+
+variable "otel_collector_url" {
+  description = "The endpoint URL for the OTel Collector"
+  type        = string
+}

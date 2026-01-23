@@ -28,3 +28,8 @@ variable "cloudrun_env" {
 }
 variable "vpc_egress" { default = "all-traffic" }
 variable "allow_unauthenticated" { default = true }
+
+variable "otel_collector_url" {
+  description = "The endpoint URL for the OTel Collector"
+  type        = string
+}

@@ -49,7 +49,17 @@ resource "kubernetes_deployment_v1" "smpp_server" {
             }
           }
           # Add other ENV vars referencing the ConfigMap/Secret similarly...
-
+          # NEW: Add the OTel Endpoint
+          env {
+            name  = "OTEL_EXPORTER_OTLP_ENDPOINT"
+            value = var.otel_collector_url
+          }
+          
+          # Optional: Add Resource Attributes to identify the service
+          env {
+            name  = "OTEL_RESOURCE_ATTRIBUTES"
+            value = "service.name=smpp-bridge,service.namespace=sandbox"
+          }
         }
       }
     }

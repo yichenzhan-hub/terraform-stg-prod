@@ -1,0 +1,1 @@
+otel_collector_url = "https://otel-collector-618425665876.northamerica-northeast2.run.app"
