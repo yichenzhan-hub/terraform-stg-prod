@@ -49,6 +49,33 @@ resource "kubernetes_deployment_v1" "smpp_server" {
             }
           }
           # Add other ENV vars referencing the ConfigMap/Secret similarly...
+          env {
+            name = "SERVER_USER"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret_v1.smpp_secrets.metadata[0].name
+                key  = "SERVER_USER"
+              }
+            }
+          }
+          env {
+            name = "SERVER_PASS"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret_v1.smpp_secrets.metadata[0].name
+                key  = "SERVER_PASS"
+              }
+            }
+          }
+          env {
+            name = "FIREBASE_API_KEY"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret_v1.smpp_secrets.metadata[0].name
+                key  = "FIREBASE_API_KEY"
+              }
+            }
+          }
           # NEW: Add the OTel Endpoint
           env {
             name  = "OTEL_EXPORTER_OTLP_ENDPOINT"
