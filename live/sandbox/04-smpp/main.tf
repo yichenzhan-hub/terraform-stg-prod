@@ -48,6 +48,33 @@ resource "kubernetes_deployment_v1" "smpp_server" {
               }
             }
           }
+          env {
+            name = "BATCH_TOPIC_NAME"
+            value_from {
+              config_map_key_ref {
+                name = kubernetes_config_map_v1.smpp_config.metadata[0].name
+                key  = "BATCH_TOPIC_NAME"
+              }
+            }
+          }
+          env {
+            name = "PRIORITY_TOPIC_NAME"
+            value_from {
+              config_map_key_ref {
+                name = kubernetes_config_map_v1.smpp_config.metadata[0].name
+                key  = "PRIORITY_TOPIC_NAME"
+              }
+            }
+          }
+          env {
+            name = "DEBUG"
+            value_from {
+              config_map_key_ref {
+                name = kubernetes_config_map_v1.smpp_config.metadata[0].name
+                key  = "DEBUG"
+              }
+            }
+          }
           # Add other ENV vars referencing the ConfigMap/Secret similarly...
           env {
             name = "SERVER_USER"
