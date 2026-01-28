@@ -114,10 +114,23 @@ resource "kubernetes_deployment_v1" "smpp_server" {
             name  = "OTEL_RESOURCE_ATTRIBUTES"
             value = "service.name=smpp-bridge,service.namespace=sandbox"
           }
-
+          # --- PROTOCOL ---
           env {
             name  = "OTEL_EXPORTER_OTLP_PROTOCOL"
             value = "http/protobuf"
+          }
+          # --- METRICS ---
+          env {
+            name  = "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT"
+            # Appends /v1/metrics to the base URL variable
+            value = "${var.otel_collector_url}/v1/metrics"
+          }
+
+          # --- TRACES ---
+          env {
+            name  = "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT"
+            # Appends /v1/traces to the base URL variable
+            value = "${var.otel_collector_url}/v1/traces"
           }
         }
       }

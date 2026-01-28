@@ -12,6 +12,8 @@ processors:
     send_batch_size: 1024
 
 exporters:
+  debug:
+    verbosity: detailed  # This prints the full JSON payload
   googlecloud:
     project: "mvn-sandbox-smsgw-yzhan" # Your Project ID
     metric:
@@ -24,8 +26,8 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [googlecloud]
+      exporters: [debug, googlecloud] # --- 2. Enable it for Traces ---
     metrics:
       receivers: [otlp]
       processors: [batch]
-      exporters: [googlecloud]
+      exporters: [debug, googlecloud] # --- 3. Enable it for Metrics ---
