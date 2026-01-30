@@ -62,6 +62,12 @@ resource "google_project_iam_member" "secret_accessor" {
   member  = "serviceAccount:${google_service_account.otel_sa.email}"
 }
 
+resource "google_project_iam_member" "log_writer" {
+  project = var.project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.otel_sa.email}"
+}
+
 # 4. Cloud Run Service (The Collector)
 resource "google_cloud_run_v2_service" "otel_collector" {
   name     = "otel-collector"
