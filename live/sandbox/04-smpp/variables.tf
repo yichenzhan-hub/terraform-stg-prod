@@ -25,3 +25,9 @@ variable "otel_collector_url" {
   description = "The endpoint URL for the OTel Collector"
   type        = string
 }
+
+variable "replica_count" {
+  description = "Number of SMPP server replicas"
+  type        = number
+  default     = 1 # Default to 1 for cost-saving in Sandbox
+}

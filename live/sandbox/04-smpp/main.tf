@@ -8,7 +8,7 @@ resource "kubernetes_deployment_v1" "smpp_server" {
   }
 
   spec {
-    replicas = 1 # Keep as 1 for TCP session stability
+    replicas = var.replica_count
     selector {
       match_labels = {
         app = "smpp-server"
@@ -131,6 +131,26 @@ resource "kubernetes_deployment_v1" "smpp_server" {
             name  = "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT"
             # Appends /v1/traces to the base URL variable
             value = "${var.otel_collector_url}/v1/traces"
+          }
+
+          # --- NEW: Redis Env Vars ---
+          env {
+            name = "REDIS_HOST"
+            value_from {
+              config_map_key_ref {
+                name = kubernetes_config_map_v1.smpp_config.metadata[0].name
+                key  = "REDIS_HOST"
+              }
+            }
+          }
+          env {
+            name = "REDIS_PORT"
+            value_from {
+              config_map_key_ref {
+                name = kubernetes_config_map_v1.smpp_config.metadata[0].name
+                key  = "REDIS_PORT"
+              }
+            }
           }
         }
       }

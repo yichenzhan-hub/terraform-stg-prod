@@ -22,6 +22,9 @@ resource "kubernetes_config_map_v1" "smpp_config" {
     "PUBSUB_PROJECT_ID"   = var.project
     "BATCH_TOPIC_NAME"    = "batch"    # Matches Layer 3 topic name
     "PRIORITY_TOPIC_NAME" = "priority" # Matches Layer 3 topic name
+    # --- NEW: Redis Config ---
+    "REDIS_HOST"          = "10.6.58.203"
+    "REDIS_PORT"          = "6379"
   }
 }
 
