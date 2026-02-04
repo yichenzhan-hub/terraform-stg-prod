@@ -21,11 +21,17 @@ resource "google_logging_project_sink" "otel_to_bigquery" {
 
   # Filter: Grab logs from your OTel Collector Container
   # This ensures we don't dump *everything* (like noisy system logs) into BigQuery, saving money.
-  filter = "resource.type=\"k8s_container\" AND resource.labels.container_name=\"otel-collector\""
-  
+  # Captures logs if OTel is on Cloud Run (Current Setup) OR Kubernetes (Future Setup)
+  filter = <<EOF
+(resource.type="cloud_run_revision" AND resource.labels.service_name="otel-collector")
+OR 
+(resource.type="k8s_container" AND resource.labels.container_name="otel-collector")
+EOF
   # CRITICAL: This allows the sink to write to BQ without a dedicated Service Account key
   unique_writer_identity = true
 }
+  
+  
 
 # 3. Permissions
 # We must give the Sink's "Service Account" permission to write to the Dataset
