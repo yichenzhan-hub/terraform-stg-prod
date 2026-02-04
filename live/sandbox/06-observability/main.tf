@@ -130,8 +130,15 @@ resource "google_logging_project_exclusion" "gke_noise" {
   # 5. Block "compute.googleapis.com" 404s (Autoscaling noise)
   filter = <<EOF
 (protoPayload.methodName:"CreateServiceTimeSeries") OR
+(protoPayload.methodName:"CreateTimeSeries") OR
+(protoPayload.methodName="watch") OR
+(protoPayload.methodName="list") OR
 (protoPayload.resourceName:"leases") OR
+(protoPayload.resourceName:"subjectaccessreviews") OR
+(protoPayload.resourceName:"componentstatuses") OR
 (protoPayload.resourceName:"kube-system") OR
+(protoPayload.resourceName:"readyz") OR
+(protoPayload.resourceName:"metrics") OR
 (resource.type="gce_instance" AND textPayload:"cri-containerd") OR
 (protoPayload.serviceName="compute.googleapis.com" AND protoPayload.status.message:"was not found")
 EOF
