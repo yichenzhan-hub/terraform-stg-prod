@@ -14,7 +14,7 @@ cloudrun_env = [
   { name = "DATASOURCE_PSQL_PASSWORD", secret = "DATASOURCE_PSQL_PASSWORD" },
   # NEW: The OTel Endpoint
   { name = "OTEL_EXPORTER_OTLP_ENDPOINT", value = "https://otel-collector-618425665876.northamerica-northeast2.run.app" },
-  # --- NEW: Redis Connection Info ---
-  { name = "REDIS_HOST", value = "10.75.36.3" },
-  { name = "REDIS_PORT", value = "6379" }
+  # --- Redis Connection Info (NO NEED anymore, using dynamic value) ---
+  # { name = "REDIS_HOST", value = "10.75.36.3" },
+  # { name = "REDIS_PORT", value = "6379" }
 ]

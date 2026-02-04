@@ -23,8 +23,8 @@ resource "kubernetes_config_map_v1" "smpp_config" {
     "BATCH_TOPIC_NAME"    = "batch"    # Matches Layer 3 topic name
     "PRIORITY_TOPIC_NAME" = "priority" # Matches Layer 3 topic name
     # --- NEW: Redis Config ---
-    "REDIS_HOST"          = "10.6.58.203"
-    "REDIS_PORT"          = "6379"
+    "REDIS_HOST"          = data.terraform_remote_state.redis.outputs.redis_host
+    "REDIS_PORT"          = tostring(data.terraform_remote_state.redis.outputs.redis_port)
   }
 }
 
@@ -45,5 +45,19 @@ resource "kubernetes_secret_v1" "smpp_secrets" {
   
   lifecycle {
     ignore_changes = [data] # Use this if you want to manage secrets manually/outside Terraform
+  }
+}
+
+# THE AUTOMATED SECRET (New! Terraform manages this)
+resource "kubernetes_secret_v1" "smpp_infra_secrets" {
+  metadata {
+    name      = "smpp-infra-secrets" # Different name
+    namespace = "default"
+  }
+  type = "Opaque"
+
+  data = {
+    # This comes from Terraform state, so we WANT it to update automatically
+    "REDIS_PASSWORD" = data.terraform_remote_state.redis.outputs.redis_auth_string
   }
 }

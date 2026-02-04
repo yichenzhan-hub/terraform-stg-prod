@@ -12,6 +12,7 @@ resource "google_redis_instance" "cache" {
   name           = "smsgw-redis-${var.environment}"
   tier           = var.tier
   memory_size_gb = var.memory_size_gb
+  auth_enabled = true
 
   region      = var.region
   # Optional: Pick a specific zone if needed, or let GCP choose

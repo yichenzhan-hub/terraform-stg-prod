@@ -19,3 +19,11 @@ data "terraform_remote_state" "db" {
 # How to use these in your main.tf:
 # vpc_connector = data.terraform_remote_state.network.outputs.connector_self_link
 # env_vars = [ { name = "DB_HOST", value = data.terraform_remote_state.db.outputs.private_ip } ]
+
+data "terraform_remote_state" "redis" {
+  backend = "gcs"
+  config = {
+    bucket = "tf-state-mvn-sandbox-yichen"  # Your bucket name
+    prefix = "sandbox/redis"                # Points to Layer 9 state
+  }
+}

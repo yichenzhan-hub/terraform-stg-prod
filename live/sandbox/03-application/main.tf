@@ -27,7 +27,22 @@ module "cloudrun" {
     ])
   }
   container_port = var.container_port
-  env_vars = var.cloudrun_env
+  # We take the static vars from tfvars AND add the dynamic Redis info
+  env_vars = concat(var.cloudrun_env, [
+    {
+      name  = "REDIS_HOST"
+      value = data.terraform_remote_state.redis.outputs.redis_host
+    },
+    {
+      name  = "REDIS_PORT"
+      value = tostring(data.terraform_remote_state.redis.outputs.redis_port)
+    },
+    {
+      name  = "REDIS_PASSWORD"
+      value = data.terraform_remote_state.redis.outputs.redis_auth_string
+    }
+  ])
+  
   service_account = google_service_account.cloudrun.email
   vpc_egress = var.vpc_egress
   allow_unauthenticated = var.allow_unauthenticated

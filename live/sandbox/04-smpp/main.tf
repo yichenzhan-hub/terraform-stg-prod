@@ -152,6 +152,15 @@ resource "kubernetes_deployment_v1" "smpp_server" {
               }
             }
           }
+          env {
+            name = "REDIS_PASSWORD"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret_v1.smpp_infra_secrets.metadata[0].name # <--- Automated Box
+                key  = "REDIS_PASSWORD"
+              }
+            }
+          }
         }
       }
     }
