@@ -117,3 +117,21 @@ resource "google_cloud_run_service_iam_member" "public_access" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
+
+resource "google_logging_project_exclusion" "gke_noise" {
+  name        = "exclude-gke-system-noise"
+  description = "Excludes noisy K8s system audit logs, node scaling errors, and 404s"
+
+  # UPDATED FILTER:
+  # 1. Block "kube-system" audit logs
+  # 2. Block "Lease" updates (heartbeats)
+  # 3. Block "Resource was not found" errors coming from Compute Engine (Autoscaling noise)
+  # 4. Block "metrics-server" failures (happens when nodes vanish)
+  filter = <<EOF
+(resource.type="k8s_cluster" AND protoPayload.resourceName:"kube-system") OR
+(resource.type="k8s_cluster" AND protoPayload.methodName:"leases.update") OR
+(resource.type="gce_instance" AND textPayload:"cri-containerd") OR
+(protoPayload.serviceName="compute.googleapis.com" AND protoPayload.status.message:"was not found") OR
+(resource.labels.container_name="metrics-server" AND textPayload:"Failed to scrape node")
+EOF
+}
